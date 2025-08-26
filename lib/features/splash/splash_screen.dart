@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/text_style.dart';
-import 'package:travel_app/features/auth/login/login_screan.dart';
+// import 'package:travel_app/features/auth/login/login_screan.dart';
+import 'package:travel_app/features/onboarding/on_screen.dart';
 // import 'package:travel_app/core/colors_style.dart';
 // import 'package:flutter_application_22/fetures/splash/splash_screan2.dart';
 
@@ -17,11 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
     Timer(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => OnboardingScreen()),
       );
     });
   }
@@ -52,7 +52,8 @@ class _SplashScreenState extends State<SplashScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Travel', style: AppTextStyle.heading1),
+                  SizedBox(width: 8),
+                  Image.asset("assets/Travel.png"),
                   SizedBox(width: 8),
                   Image.asset("assets/image.png"),
                 ],

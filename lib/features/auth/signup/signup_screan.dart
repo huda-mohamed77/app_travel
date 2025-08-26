@@ -31,7 +31,7 @@ class SignupScrean extends StatelessWidget {
                 CustmsTextfeid(
                   controller: emailcontroller,
                   lable: "Email",
-                  icon: Icon(color: Color(0xFF366EA1), Icons.email),
+                  icon: Icon(color: Color(0xFF1F2E4C), Icons.email),
                   obscure: false,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -46,7 +46,7 @@ class SignupScrean extends StatelessWidget {
 
                   obscure: false,
                   lable: "Username",
-                  icon: Icon(color: Color(0xFF366EA1), Icons.person),
+                  icon: Icon(color: Color(0xFF1F2E4C), Icons.person),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Username is required";
@@ -58,7 +58,7 @@ class SignupScrean extends StatelessWidget {
                 SizedBox(height: 30),
                 CustmsTextfeid(
                   lable: "Password",
-                  icon: Icon(color: Color(0xFF366EA1), Icons.key),
+                  icon: Icon(color: Color(0xFF1F2E4C), Icons.key),
                   obscure: true,
 
                   validator: (value) {
@@ -75,7 +75,7 @@ class SignupScrean extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF366EA1),
+                      backgroundColor: Color(0xFF1F2E4C),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

@@ -11,7 +11,7 @@ class AppTextStyle {
   static const TextStyle blackHeaderText = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
-    color: Colors.blueGrey,
+    color: Colors.white,
   );
 
   static const TextStyle heading2 = TextStyle(

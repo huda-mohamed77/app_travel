@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
                 CustmsTextfeid(
                   controller: emailcontroller,
                   lable: "Email",
-                  icon: Icon(color: Color(0xFF366EA1), Icons.email),
+                  icon: Icon(color: Color(0xFF1F2E4C), Icons.email),
                   obscure: false,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: 30),
                 CustmsTextfeid(
                   lable: "Password",
-                  icon: Icon(color: Color(0xFF366EA1), Icons.key),
+                  icon: Icon(color: Color(0xFF1F2E4C), Icons.key),
                   obscure: true,
 
                   validator: (value) {
@@ -59,7 +59,7 @@ class LoginScreen extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF366EA1),
+                      backgroundColor: Color(0xFF1F2E4C),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

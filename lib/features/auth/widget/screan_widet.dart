@@ -33,21 +33,25 @@ class _CustomTextfaieldState extends State<CustmsTextfeid> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      style: TextStyle(color: Colors.blueGrey),
+      style: TextStyle(color: Colors.white),
       controller: widget.controller,
       obscureText: _obscureText,
       validator: widget.validator,
       decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+        ),
+
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 2.0),
+          borderSide: BorderSide(color: const Color(0xFF1F2E4C), width: 2.0),
         ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-        label: Text(widget.lable, style: TextStyle(color: Color(0xFF366EA1))),
+        label: Text(widget.lable, style: TextStyle(color: Colors.white)),
         prefixIcon: widget.icon,
         suffixIcon: widget.obscure
             ? IconButton(
                 icon: Icon(
-                  color: Colors.blue,
+                  color: Color(0xFF1F2E4C),
                   _obscureText ? Icons.visibility_off : Icons.visibility,
                 ),
                 onPressed: () {
