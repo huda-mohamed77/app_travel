@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/text_style.dart';
 // import 'package:travel_app/features/auth/login/login_screan.dart';
+
 import 'package:travel_app/features/onboarding/on_screen.dart';
 // import 'package:travel_app/core/colors_style.dart';
 // import 'package:flutter_application_22/fetures/splash/splash_screan2.dart';
