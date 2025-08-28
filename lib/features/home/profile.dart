@@ -31,10 +31,10 @@ class ProfilePage extends StatelessWidget {
                     backgroundImage: NetworkImage(''),
                     backgroundColor: ColorsStyle.thrtineeColor,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Text(user.name, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: ColorsStyle.secondColor)),
                   Text(user.email, style: TextStyle(color: ColorsStyle.secondColor)),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: () {
                       _showEditDialog(context, user.name, user.email);
@@ -43,13 +43,13 @@ class ProfilePage extends StatelessWidget {
                     label: Text('Edit Profile', style: TextStyle(color: ColorsStyle.primaryColor)),
                     style: ElevatedButton.styleFrom(backgroundColor: ColorsStyle.thrtineeColor),
                   ),
-                  const Spacer(),
+                   Spacer(),
                   ElevatedButton.icon(
                     onPressed: () {
                       context.read<AuthCubit>().logout();
                       Navigator.pushReplacementNamed(context, '/login');
                     },
-                    icon: const Icon(Icons.logout),
+                    icon: Icon(Icons.logout),
                     label: Text('Log Out', style: TextStyle(color: ColorsStyle.primaryColor)),
                     style: ElevatedButton.styleFrom(backgroundColor: ColorsStyle.thrtineeColor),
                   ),
@@ -59,7 +59,7 @@ class ProfilePage extends StatelessWidget {
           } else if (state is AuthFailure) {
             return Center(child: Text("❌ ${state.message}"));
           } else {
-            return const Center(child: Text("No user data"));
+            return  Center(child: Text("No user data",style: TextStyle(color: ColorsStyle.thrtineeColor),));
           }
         },
       ),
@@ -73,7 +73,7 @@ class ProfilePage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Edit Profile'),
+        title: Text('Edit Profile',style: TextStyle(color: ColorsStyle.thrtineeColor)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -84,7 +84,7 @@ class ProfilePage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text('Cancel',style: TextStyle(color: ColorsStyle.thrtineeColor)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -94,7 +94,7 @@ class ProfilePage extends StatelessWidget {
                   );
               Navigator.pop(context);
             },
-            child: const Text('Save'),
+            child:  Text('Save',style: TextStyle(color: ColorsStyle.thrtineeColor)),
           )
         ],
       ),

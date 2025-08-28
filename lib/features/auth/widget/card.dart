@@ -12,42 +12,47 @@ class PlaceCard extends StatefulWidget {
 
 class _PlaceCardState extends State<PlaceCard> {
   bool isFavourite = false;
+Future<void> _addToFavourites() async {
+  final user = FirebaseAuth.instance.currentUser;
 
-  Future<void> _addToFavourites() async {
-    final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return;
 
-    if (user == null) {
+  try {
+    final docRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('favourites')
+        .doc('mount_fuji');
+
+    final snapshot = await docRef.get();
+    if (snapshot.exists) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please log in first")),
+      SnackBar(content: Text("Already added to favourites")),
       );
       return;
     }
 
-    try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('favourites')
-          .add({
-        'name': 'Mount Fuji',
-        'location': 'Tokyo, Japan',
-        'image': 'assets/download (29) 1.png', 
-      });
+    await docRef.set({
+      'name': 'Mount Fuji',
+      'location': 'Tokyo, Japan',
+      'image': 'assets/download (29) 1.png',
+    });
 
-      setState(() {
-        isFavourite = true;
-      });
+    setState(() {
+      isFavourite = true;
+    });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Added to favourites")),
-      );
-    } catch (e) {
-      print("❌ Error adding to favourites: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Something went wrong")),
-      );
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+       SnackBar(content: Text("✅ Added to favourites")),
+    );
+  } catch (e) {
+    print("❌ Error adding to favourites: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Something went wrong")),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,20 +112,20 @@ class _PlaceCardState extends State<PlaceCard> {
                       fontSize: 14,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                   SizedBox(height: 4),
                   Row(
                     children: [
                       Icon(Icons.location_on_outlined,
                           color: ColorsStyle.nineColor, size: 14),
-                      const SizedBox(width: 4),
+                    SizedBox(width: 4),
                       Text(
                         'Tokyo, Japan',
                         style: TextStyle(
                             color: ColorsStyle.nineColor, fontSize: 12),
                       ),
-                      const Spacer(),
-                      const Icon(Icons.star_border_outlined, size: 14),
-                      const SizedBox(width: 2),
+                      Spacer(),
+                       Icon(Icons.star_border_outlined, size: 14),
+                      SizedBox(width: 2),
                       Text(
                         '4.8',
                         style: TextStyle(

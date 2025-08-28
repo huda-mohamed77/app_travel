@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/core/dp/firebase_fun.dart';
@@ -14,6 +15,11 @@ class _AndesCardState extends State<AndesCard> {
   bool isFavourite = false;
 
   Future<void> _addToFavourites() async {
+      final user = FirebaseAuth.instance.currentUser;
+
+  
+  if (user == null) return;
+
     try {
       await FirebaseFunctions().addToFavorites({
         'name': 'Andes Mountain',
@@ -26,12 +32,12 @@ class _AndesCardState extends State<AndesCard> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("✅ Added to favourites")),
+         SnackBar(content: Text("✅ Added to favourites")),
       );
     } catch (e) {
       print("❌ Error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Something went wrong")),
+         SnackBar(content: Text("Something went wrong")),
       );
     }
   }
@@ -46,11 +52,11 @@ class _AndesCardState extends State<AndesCard> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // 🔁 استخدمي صورة من الإنترنت
+      
             Image.asset(
               'assets/download (30) 2.png',
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+              errorBuilder: (context, error, stackTrace) =>  Icon(Icons.broken_image),
             ),
 
             Container(

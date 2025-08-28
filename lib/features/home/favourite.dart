@@ -67,11 +67,12 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       ),
                       SizedBox(height: 10),
                       ElevatedButton(
+                           style: ElevatedButton.styleFrom(backgroundColor: ColorsStyle.thrtineeColor),
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/home');
                         },
                         child: Text('Explore Places',
-                            style: TextStyle(color: ColorsStyle.thrtineeColor)),
+                            style: TextStyle(color: ColorsStyle.primaryColor)),
                       )
                     ],
                   ),
