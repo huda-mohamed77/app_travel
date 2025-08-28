@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/features/destination/cubit/destination_state.dart';
+import 'package:travel_app/features/destination/database/destination_service.dart';
 import 'package:travel_app/features/destination/models/destination_model.dart';
-import 'package:travel_app/features/destination/services/destination_service.dart';
 
 class DestinationCubit extends Cubit<DestinationState> {
   final DestinationService service;
