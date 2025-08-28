@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit(FirebaseFunctions())),
-        // BlocProvider(create: (context) => DetailsCubit(FirebaseFunctions())),
+        BlocProvider(create: (context) => DetailsCubit(FirebaseFunctions())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
