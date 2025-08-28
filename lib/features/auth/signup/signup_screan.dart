@@ -7,6 +7,7 @@ import 'package:travel_app/features/auth/cubit/auth_state.dart';
 import 'package:travel_app/features/auth/login/login_screan.dart';
 import 'package:travel_app/features/auth/widget/custom_button.dart';
 import 'package:travel_app/features/auth/widget/custom_textfeild.dart';
+// import 'package:travel_app/features/home/home_screen.dart';
 
 // ignore: must_be_immutable
 class SignupScrean extends StatelessWidget {
@@ -29,7 +30,7 @@ class SignupScrean extends StatelessWidget {
             if (state is AuthSuccess) {
               // Navigator.pushReplacement(
               //   context,
-              //   MaterialPageRoute(builder: (_) => Homescreen()),
+              //   MaterialPageRoute(builder: (_) => HomeScreen()),
               // );
             }
           },

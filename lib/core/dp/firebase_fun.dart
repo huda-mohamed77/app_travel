@@ -41,8 +41,10 @@ class FirebaseFunctions {
 
     User user = result.user!;
 
-    DocumentSnapshot doc =
-        await _firestore.collection('users').doc(user.uid).get();
+    DocumentSnapshot doc = await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .get();
 
     return AppUser.fromJson(doc.data() as Map<String, dynamic>);
   }
@@ -52,9 +54,9 @@ class FirebaseFunctions {
     await _auth.signOut();
   }
 
-  
   // Bookings
-  final CollectionReference bookingsCollection = FirebaseFirestore.instance.collection('bookings');
+  final CollectionReference bookingsCollection = FirebaseFirestore.instance
+      .collection('bookings');
 
   Future<void> bookTrip(Booking booking) async {
     await bookingsCollection.doc(booking.id).set(booking.toJson());
@@ -62,22 +64,24 @@ class FirebaseFunctions {
 
   Future<List<Booking>> getBookings() async {
     final snapshot = await bookingsCollection.get();
-    return snapshot.docs.map((doc) => Booking.fromJson(doc.data() as Map<String, dynamic>)).toList();
+    return snapshot.docs
+        .map((doc) => Booking.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 
   Future<void> deleteBooking(String id) async {
     await bookingsCollection.doc(id).delete();
   }
 
-=======
-
   // ✅ Get Current User
   Future<AppUser?> getCurrentUser() async {
     final user = _auth.currentUser;
     if (user == null) return null;
 
-    DocumentSnapshot doc =
-        await _firestore.collection('users').doc(user.uid).get();
+    DocumentSnapshot doc = await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .get();
 
     return AppUser.fromJson(doc.data() as Map<String, dynamic>);
   }
@@ -122,9 +126,7 @@ class FirebaseFunctions {
         .collection('favourites')
         .get();
 
-    return snapshot.docs
-        .map((doc) => {'id': doc.id, ...doc.data()})
-        .toList();
+    return snapshot.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList();
   }
 
   // ✅ Update user profile (name/email)
@@ -141,26 +143,18 @@ class FirebaseFunctions {
       print("📝 Profile updated");
     }
   }
- 
 
+  Future<bool> isPlaceFavourite(String placeName) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return false;
 
-Future<bool> isPlaceFavourite(String placeName) async {
-  final user = FirebaseAuth.instance.currentUser;
-  if (user == null) return false;
+    final snapshot = await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('favourites')
+        .where('name', isEqualTo: placeName)
+        .get();
 
-  final snapshot = await _firestore
-      .collection('users')
-      .doc(user.uid)
-      .collection('favourites')
-      .where('name', isEqualTo: placeName)
-      .get();
-
-  return snapshot.docs.isNotEmpty;
-
+    return snapshot.docs.isNotEmpty;
+  }
 }
-
-
- 
-}
-
-

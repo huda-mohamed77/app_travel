@@ -32,6 +32,4 @@ class BookingError extends DetailsState {
   BookingError(this.message);
 }
 
-=======
-class AuthLoggedOut extends AuthState {} 
-
+class AuthLoggedOut extends AuthState {}

@@ -12,7 +12,10 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorsStyle.thrtineeColor,
-        title: Text('👤 Profile', style: TextStyle(color: ColorsStyle.primaryColor)),
+        title: Text(
+          '👤 Profile',
+          style: TextStyle(color: ColorsStyle.primaryColor),
+        ),
         centerTitle: true,
       ),
       body: BlocBuilder<AuthCubit, AuthState>(
@@ -32,26 +35,46 @@ class ProfilePage extends StatelessWidget {
                     backgroundColor: ColorsStyle.thrtineeColor,
                   ),
                   SizedBox(height: 10),
-                  Text(user.name, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: ColorsStyle.secondColor)),
-                  Text(user.email, style: TextStyle(color: ColorsStyle.secondColor)),
-                   SizedBox(height: 20),
+                  Text(
+                    user.name,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: ColorsStyle.secondColor,
+                    ),
+                  ),
+                  Text(
+                    user.email,
+                    style: TextStyle(color: ColorsStyle.secondColor),
+                  ),
+                  SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: () {
                       _showEditDialog(context, user.name, user.email);
                     },
                     icon: Icon(Icons.edit, color: ColorsStyle.primaryColor),
-                    label: Text('Edit Profile', style: TextStyle(color: ColorsStyle.primaryColor)),
-                    style: ElevatedButton.styleFrom(backgroundColor: ColorsStyle.thrtineeColor),
+                    label: Text(
+                      'Edit Profile',
+                      style: TextStyle(color: ColorsStyle.primaryColor),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorsStyle.thrtineeColor,
+                    ),
                   ),
-                   Spacer(),
+                  Spacer(),
                   ElevatedButton.icon(
                     onPressed: () {
                       context.read<AuthCubit>().logout();
                       Navigator.pushReplacementNamed(context, '/login');
                     },
                     icon: Icon(Icons.logout),
-                    label: Text('Log Out', style: TextStyle(color: ColorsStyle.primaryColor)),
-                    style: ElevatedButton.styleFrom(backgroundColor: ColorsStyle.thrtineeColor),
+                    label: Text(
+                      'Log Out',
+                      style: TextStyle(color: ColorsStyle.primaryColor),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorsStyle.thrtineeColor,
+                    ),
                   ),
                 ],
               ),
@@ -59,47 +82,73 @@ class ProfilePage extends StatelessWidget {
           } else if (state is AuthFailure) {
             return Center(child: Text("❌ ${state.message}"));
           } else {
-            return  Center(child: Text("No user data",style: TextStyle(color: ColorsStyle.thrtineeColor),));
+            return Center(
+              child: Text(
+                "No user data",
+                style: TextStyle(color: ColorsStyle.thrtineeColor),
+              ),
+            );
           }
         },
       ),
     );
   }
 
-  void _showEditDialog(BuildContext context, String currentName, String currentEmail) {
-    final TextEditingController nameController = TextEditingController(text: currentName);
-    final TextEditingController emailController = TextEditingController(text: currentEmail);
+  void _showEditDialog(
+    BuildContext context,
+    String currentName,
+    String currentEmail,
+  ) {
+    final TextEditingController nameController = TextEditingController(
+      text: currentName,
+    );
+    final TextEditingController emailController = TextEditingController(
+      text: currentEmail,
+    );
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit Profile',style: TextStyle(color: ColorsStyle.thrtineeColor)),
+        title: Text(
+          'Edit Profile',
+          style: TextStyle(color: ColorsStyle.thrtineeColor),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: nameController, decoration: const InputDecoration(labelText: 'Name')),
-            TextField(controller: emailController, decoration: const InputDecoration(labelText: 'Email')),
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(labelText: 'Name'),
+            ),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel',style: TextStyle(color: ColorsStyle.thrtineeColor)),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: ColorsStyle.thrtineeColor),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
               context.read<AuthCubit>().updateProfile(
-                    name: nameController.text,
-                    email: emailController.text,
-                  );
+                name: nameController.text,
+                email: emailController.text,
+              );
               Navigator.pop(context);
             },
-            child:  Text('Save',style: TextStyle(color: ColorsStyle.thrtineeColor)),
-          )
+            child: Text(
+              'Save',
+              style: TextStyle(color: ColorsStyle.thrtineeColor),
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-
