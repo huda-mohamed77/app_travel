@@ -17,17 +17,29 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,50 +52,12 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB1krnizLdaPfw-INv5ReTrt7QWVhUNXqs',
-    appId: '1:351408659635:web:83718678cd6fcb3a92a4c6',
-    messagingSenderId: '351408659635',
-    projectId: 'travelapp-e464f',
-    authDomain: 'travelapp-e464f.firebaseapp.com',
-    storageBucket: 'travelapp-e464f.firebasestorage.app',
-    measurementId: 'G-777TKBSZS6',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDrTB9k9BsBbsY96Yjcub3WE0LEMcMgV4s',
-    appId: '1:351408659635:android:b2982ebd578896a492a4c6',
-    messagingSenderId: '351408659635',
-    projectId: 'travelapp-e464f',
-    storageBucket: 'travelapp-e464f.firebasestorage.app',
+    apiKey: 'AIzaSyCsNvUfgGKOTJEZnRgJESrEf_Pv5vfItCw',
+    appId: '1:436614213200:android:dcd404468938d569f26b55',
+    messagingSenderId: '436614213200',
+    projectId: 'app-travel-64d25',
+    storageBucket: 'app-travel-64d25.firebasestorage.app',
   );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDe9ei5etkwfbynXSRk6Idg2CMs4YzK8fc',
-    appId: '1:351408659635:ios:714b02ed1a0497bc92a4c6',
-    messagingSenderId: '351408659635',
-    projectId: 'travelapp-e464f',
-    storageBucket: 'travelapp-e464f.firebasestorage.app',
-    iosBundleId: 'com.example.travelApp',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDe9ei5etkwfbynXSRk6Idg2CMs4YzK8fc',
-    appId: '1:351408659635:ios:714b02ed1a0497bc92a4c6',
-    messagingSenderId: '351408659635',
-    projectId: 'travelapp-e464f',
-    storageBucket: 'travelapp-e464f.firebasestorage.app',
-    iosBundleId: 'com.example.travelApp',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyB1krnizLdaPfw-INv5ReTrt7QWVhUNXqs',
-    appId: '1:351408659635:web:dcb4c09d5cbc34b992a4c6',
-    messagingSenderId: '351408659635',
-    projectId: 'travelapp-e464f',
-    authDomain: 'travelapp-e464f.firebaseapp.com',
-    storageBucket: 'travelapp-e464f.firebasestorage.app',
-    measurementId: 'G-9K70PP3F8M',
-  );
-
 }
+

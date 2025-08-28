@@ -41,6 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailure(e.toString()));
     }
   }
+
   }
 class DetailsCubit extends Cubit<DetailsState> {
   final FirebaseFunctions service;
@@ -59,6 +60,21 @@ class DetailsCubit extends Cubit<DetailsState> {
       emit(BookingSuccess());
     } catch (e) {
       emit(BookingError(e.toString()));
+=======
+  Future<void> updateProfile({String? name, String? email}) async {
+    emit(AuthLoading());
+    try {
+      await _firebaseFunctions.updateProfile(name: name, email: email);
+      
+    
+      final updatedUser = await _firebaseFunctions.getCurrentUser();
+      if (updatedUser != null) {
+        emit(AuthSuccess(updatedUser));
+      } else {
+        emit(AuthFailure("User not found after update"));
+      }
+    } catch (e) {
+      emit(AuthFailure("Failed to update profile: $e"));
     }
   }
 }

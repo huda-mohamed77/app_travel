@@ -17,6 +17,7 @@ class AuthFailure extends AuthState {
 
   AuthFailure(this.message);
 }
+
 //details states
 abstract class DetailsState {}
 
@@ -30,4 +31,7 @@ class BookingError extends DetailsState {
   final String message;
   BookingError(this.message);
 }
+
+=======
+class AuthLoggedOut extends AuthState {} 
 
