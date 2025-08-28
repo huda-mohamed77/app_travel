@@ -1,28 +1,14 @@
-// import 'package:flutter/material.dart';
-// import 'package:travel_app/features/splash/splash_screen.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
-//   }
-// }
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/home/favourite.dart';
 import 'package:travel_app/features/home/home_screen.dart';
 import 'package:travel_app/features/home/profile.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
