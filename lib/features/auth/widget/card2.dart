@@ -1,8 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/colors_style.dart';
+import 'package:travel_app/core/dp/firebase_fun.dart';
 
-class AndesCard extends StatelessWidget {
+
+class AndesCard extends StatefulWidget {
   const AndesCard({super.key});
+
+  @override
+  State<AndesCard> createState() => _AndesCardState();
+}
+
+class _AndesCardState extends State<AndesCard> {
+  bool isFavourite = false;
+
+  Future<void> _addToFavourites() async {
+    try {
+      await FirebaseFunctions().addToFavorites({
+        'name': 'Andes Mountain',
+        'location': 'South America',
+        'image': 'assets/download (30) 2.png',
+      });
+
+      setState(() {
+        isFavourite = true;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("✅ Added to favourites")),
+      );
+    } catch (e) {
+      print("❌ Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Something went wrong")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +46,13 @@ class AndesCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-          
+            // 🔁 استخدمي صورة من الإنترنت
             Image.asset(
               'assets/download (30) 2.png',
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
             ),
 
-          
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -31,21 +63,23 @@ class AndesCard extends StatelessWidget {
               ),
             ),
 
-          
+            // ❤️ Favorite Button
             Positioned(
               top: 8,
               right: 8,
-              child: CircleAvatar(
-                // ignore: deprecated_member_use
-                backgroundColor: ColorsStyle.sevenColor.withOpacity(0.6),
-                child: Icon(
-                  Icons.favorite_border,
-                  color: ColorsStyle.primaryColor,
+              child: GestureDetector(
+                onTap: isFavourite ? null : _addToFavourites,
+                child: CircleAvatar(
+                  backgroundColor: ColorsStyle.sevenColor.withOpacity(0.6),
+                  child: Icon(
+                    isFavourite ? Icons.favorite : Icons.favorite_border,
+                    color: ColorsStyle.primaryColor,
+                  ),
                 ),
               ),
             ),
 
-          
+            // Info
             Positioned(
               bottom: 12,
               left: 12,
@@ -95,7 +129,8 @@ class AndesCard extends StatelessWidget {
           ],
         ),
       ),
-  
     );
   }
 }
+
+
