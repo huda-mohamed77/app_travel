@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/login/login_screan.dart';
 import 'package:travel_app/features/onboarding/widget/on_widget.dart';
->>>>>>> 03ac4ae0061350d445124e0c9663c0ea7e14109b
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
