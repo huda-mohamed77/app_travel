@@ -17,17 +17,41 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
+<<<<<<< HEAD
       return web;
+=======
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
+>>>>>>> 03ac4ae0061350d445124e0c9663c0ea7e14109b
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
+<<<<<<< HEAD
         return ios;
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
         return windows;
+=======
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.macOS:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+>>>>>>> 03ac4ae0061350d445124e0c9663c0ea7e14109b
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,6 +64,7 @@ class DefaultFirebaseOptions {
     }
   }
 
+<<<<<<< HEAD
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyB1krnizLdaPfw-INv5ReTrt7QWVhUNXqs',
     appId: '1:351408659635:web:83718678cd6fcb3a92a4c6',
@@ -87,3 +112,13 @@ class DefaultFirebaseOptions {
   );
 
 }
+=======
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyCsNvUfgGKOTJEZnRgJESrEf_Pv5vfItCw',
+    appId: '1:436614213200:android:dcd404468938d569f26b55',
+    messagingSenderId: '436614213200',
+    projectId: 'app-travel-64d25',
+    storageBucket: 'app-travel-64d25.firebasestorage.app',
+  );
+}
+>>>>>>> 03ac4ae0061350d445124e0c9663c0ea7e14109b

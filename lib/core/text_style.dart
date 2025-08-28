@@ -20,15 +20,4 @@ class AppTextStyle {
     color: Colors.white,
     wordSpacing: 4,
   );
-
-  static const TextStyle whiteHeaderText = TextStyle(
-    color: Colors.white,
-    fontSize: 30,
-    fontWeight: FontWeight.bold,
-  );
-  static const TextStyle whiteSubText = TextStyle(
-    color: Colors.white,
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-  );
 }

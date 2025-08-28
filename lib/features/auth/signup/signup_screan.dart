@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/core/text_style.dart';
 import 'package:travel_app/features/auth/login/login_screan.dart';
-import 'package:travel_app/features/auth/widget/screan_widet.dart';
+import 'package:travel_app/features/auth/widget/custom_button.dart';
+import 'package:travel_app/features/auth/widget/custom_textfeild.dart';
 
 // ignore: must_be_immutable
 class SignupScrean extends StatelessWidget {
@@ -70,28 +71,7 @@ class SignupScrean extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF1F2E4C),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => SignupScrean()),
-                      // );
-                    },
-                    child: const Text(
-                      "sign up",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                  ),
-                ),
+                CustomButton(onPressed: () {}, title: 'Sign Up'),
                 SizedBox(height: 20),
                 Align(
                   alignment: Alignment.bottomRight,
