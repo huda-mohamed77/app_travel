@@ -1,1 +1,8 @@
+
+{"flutter":{"platforms":{"android":{"default":{"projectId":"travelapp-e464f","appId":"1:351408659635:android:b2982ebd578896a492a4c6","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"travelapp-e464f","configurations":{"android":"1:351408659635:android:b2982ebd578896a492a4c6","ios":"1:351408659635:ios:714b02ed1a0497bc92a4c6","macos":"1:351408659635:ios:714b02ed1a0497bc92a4c6","web":"1:351408659635:web:83718678cd6fcb3a92a4c6","windows":"1:351408659635:web:dcb4c09d5cbc34b992a4c6"}}}}}}
+=======
+{"flutter":{"platforms":{"android":{"default":{"projectId":"app-travel-64d25","appId":"1:436614213200:android:dcd404468938d569f26b55","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"app-travel-64d25","configurations":{"android":"1:436614213200:android:dcd404468938d569f26b55"}}}}}}
+
+=======
 {"flutter":{"platforms":{"android":{"default":{"projectId":"app-travel-64d25","appId":"1:436614213200:android:dcd404468938d569f26b55","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"app-travel-64d25","configurations":{"android":"1:436614213200:android:dcd404468938d569f26b55","web":"1:436614213200:web:eccb0d6f10e9c29bf26b55"}}}}}}
+

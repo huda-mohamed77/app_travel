@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/login/login_screan.dart';
 import 'package:travel_app/features/onboarding/widget/on_widget.dart';
