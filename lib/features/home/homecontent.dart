@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/cubit/auth_logic.dart';
 import 'package:travel_app/features/auth/cubit/auth_state.dart';
-import 'package:travel_app/features/auth/widget/card.dart';
-import 'package:travel_app/features/auth/widget/card2.dart';
+import 'package:travel_app/features/destination/widgets/card.dart';
+import 'package:travel_app/features/destination/widgets/card2.dart';
 
 class HomeContentPage extends StatefulWidget {
   const HomeContentPage({super.key});
