@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/cubit/auth_logic.dart';
 import 'package:travel_app/features/auth/cubit/auth_state.dart';
+
 import 'package:travel_app/features/destination/widgets/card.dart';
 import 'package:travel_app/features/destination/widgets/card2.dart';
+
+import 'package:travel_app/features/destination/models/destination_model.dart';
+import 'package:travel_app/features/destination/widgets/card.dart';
 
 class HomeContentPage extends StatefulWidget {
   const HomeContentPage({super.key});
@@ -15,32 +20,10 @@ class HomeContentPage extends StatefulWidget {
 
 class _HomeContentPageState extends State<HomeContentPage> {
   final TextEditingController _searchController = TextEditingController();
-
-
-  final List<Map<String, dynamic>> allPlaces = [
-    {
-      'name': 'Mount Fuji',
-      'location': 'Tokyo, Japan',
-      'widget': const PlaceCard(),
-    },
-    {
-      'name': 'Andes Mountain',
-      'location': 'South America',
-      'widget': const AndesCard(),
-    },
-  ];
-
   String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
-    final filteredPlaces = allPlaces.where((place) {
-      final name = place['name'].toString().toLowerCase();
-      final location = place['location'].toString().toLowerCase();
-      return name.contains(_searchQuery.toLowerCase()) ||
-          location.contains(_searchQuery.toLowerCase());
-    }).toList();
-
     return SafeArea(
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
@@ -57,7 +40,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
         },
         builder: (context, state) {
           if (state is AuthLoading) {
-            return  Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return SingleChildScrollView(
@@ -65,6 +48,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                /// Greeting
                 Row(
                   children: [
                     Text(
@@ -75,10 +59,10 @@ class _HomeContentPageState extends State<HomeContentPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text('👋', style: TextStyle(fontSize: 20)),
+                    const Text('👋', style: TextStyle(fontSize: 20)),
                   ],
                 ),
-               SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   'Explore the world',
                   style: TextStyle(
@@ -86,9 +70,9 @@ class _HomeContentPageState extends State<HomeContentPage> {
                     fontWeight: FontWeight.w200,
                   ),
                 ),
-                 SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-                // Search Bar
+                /// Search Bar
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
@@ -101,9 +85,12 @@ class _HomeContentPageState extends State<HomeContentPage> {
                       Expanded(
                         child: TextField(
                           controller: _searchController,
-                           style: TextStyle(color: ColorsStyle.thrtineeColor,fontWeight: FontWeight.bold),
-                            cursorColor: ColorsStyle.thrtineeColor,
-                          decoration:  InputDecoration(
+                          style: TextStyle(
+                            color: ColorsStyle.thrtineeColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          cursorColor: ColorsStyle.thrtineeColor,
+                          decoration: const InputDecoration(
                             hintText: 'Search places',
                             border: InputBorder.none,
                           ),
@@ -119,8 +106,9 @@ class _HomeContentPageState extends State<HomeContentPage> {
                   ),
                 ),
 
-                 SizedBox(height: 50),
+                const SizedBox(height: 50),
 
+                /// Section title
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -142,21 +130,48 @@ class _HomeContentPageState extends State<HomeContentPage> {
                   ],
                 ),
 
-                 SizedBox(height: 50),
+                const SizedBox(height: 50),
 
-                // Places List
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: filteredPlaces.map((place) {
-                      return Row(
-                        children: [
-                          place['widget'],
-                        SizedBox(width: 16),
-                        ],
+                /// Places list from Firestore
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection('destinations').snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return const Center(child: Text("No destinations found"));
+                    }
+
+                    // Convert snapshot to List<DestinationModel>
+                    final destinations = snapshot.data!.docs.map((doc) {
+                      return DestinationModel.fromJson(
+                        doc.data() as Map<String, dynamic>,
+                        doc.id,
                       );
-                    }).toList(),
-                  ),
+                    }).where((place) {
+                      // Apply search filter
+                      final name = place.title.toLowerCase();
+                      final location = place.location.toLowerCase();
+                      return name.contains(_searchQuery.toLowerCase()) ||
+                          location.contains(_searchQuery.toLowerCase());
+                    }).toList();
+
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: destinations.map((place) {
+                          return Row(
+                            children: [
+                              PlaceCard(place: place, user: null),
+                              const SizedBox(width: 16),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

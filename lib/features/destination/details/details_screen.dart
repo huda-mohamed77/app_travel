@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+
+import 'package:travel_app/features/auth/models/user_model.dart';
+
 import 'package:travel_app/features/destination/cubit/destination_cubit.dart';
 import 'package:travel_app/features/destination/cubit/destination_state.dart';
 import 'package:travel_app/features/destination/models/destination_model.dart';
@@ -25,9 +29,15 @@ class DetailScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: Stack(
                   children: [
+
                     Image.network(
                       place.imageUrl,
                       height: 330,
+
+                    Image.asset(
+                      place.imageUrl,
+                      height: height * 0.65,
+
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
@@ -67,7 +77,11 @@ class DetailScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     place.title,
+
                                     style: const TextStyle(
+
+                                    style: TextStyle(
+
                                       color: Colors.white,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w600,
@@ -214,6 +228,7 @@ class DetailScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 16),
+
 
               BlocConsumer<BookingCubit, BookingState>(
                 listener: (context, state) {
