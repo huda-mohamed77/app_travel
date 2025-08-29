@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
         foregroundColor: Colors.white,
         minimumSize: const Size(double.infinity, 56),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        elevation: 8, // Elevated shadow
+        elevation: 8,
         shadowColor: Colors.black,
       ),
 

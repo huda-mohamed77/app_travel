@@ -6,7 +6,7 @@ class FirebaseFunctions {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // ✅ Sign Up
+  // Sign Up
   Future<AppUser> signUp(String name, String email, String password) async {
     UserCredential result = await _auth.createUserWithEmailAndPassword(
       email: email,
@@ -15,24 +15,19 @@ class FirebaseFunctions {
 
     User user = result.user!;
 
-    AppUser appUser = AppUser(
-      id: user.uid,
-      name: name,
-      email: email,
-      favorites: [],
-    );
+    AppUser appUser = AppUser(id: user.uid, name: name, email: email);
 
     try {
       await _firestore.collection('users').doc(user.uid).set(appUser.toJson());
-      print("✅ Data saved to Firestore for user ${user.uid}");
+      print("Data saved to Firestore for user ${user.uid}");
     } catch (e) {
-      print("❌ Firestore error: $e");
+      print(" Firestore error: $e");
     }
 
     return appUser;
   }
 
-  // ✅ Login
+  //  Login
   Future<AppUser> login(String email, String password) async {
     UserCredential result = await _auth.signInWithEmailAndPassword(
       email: email,
@@ -49,7 +44,7 @@ class FirebaseFunctions {
     return AppUser.fromJson(doc.data() as Map<String, dynamic>);
   }
 
-  // ✅ Logout
+  //  Logout
   Future<void> logout() async {
     await _auth.signOut();
   }
