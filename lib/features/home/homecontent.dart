@@ -4,6 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/cubit/auth_logic.dart';
 import 'package:travel_app/features/auth/cubit/auth_state.dart';
+
+import 'package:travel_app/features/destination/widgets/card.dart';
+import 'package:travel_app/features/destination/widgets/card2.dart';
+
 import 'package:travel_app/features/destination/models/destination_model.dart';
 import 'package:travel_app/features/destination/widgets/card.dart';
 
