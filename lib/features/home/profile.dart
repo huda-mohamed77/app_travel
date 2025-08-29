@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/cubit/auth_logic.dart';
 import 'package:travel_app/features/auth/cubit/auth_state.dart';
+import 'package:travel_app/features/destination/database/destination_service.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -136,7 +137,7 @@ class ProfilePage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              context.read<AuthCubit>().updateProfile(
+              context.read<DestinationService>().updateProfile(
                 name: nameController.text,
                 email: emailController.text,
               );

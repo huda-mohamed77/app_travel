@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/core/dp/firebase_fun.dart';
+import 'package:travel_app/features/destination/database/destination_service.dart';
  
 
 class FavouritesPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
       isLoading = true;
     });
 
-    final favs = await firebaseFunctions.getUserFavorites();
+    final favs = await DestinationService().getUserFavorites();
 
     setState(() {
       favourites = favs;
@@ -36,7 +37,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
   }
 
   Future<void> _removeFavourite(String docId) async {
-    await firebaseFunctions.removeFromFavorites(docId);
+    await DestinationService().removeFromFavorites(docId);
     _loadFavourites(); 
   }
 

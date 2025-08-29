@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:travel_app/features/auth/models/user_model.dart';
+import 'package:travel_app/features/destination/cubit/destination_cubit.dart';
+import 'package:travel_app/features/destination/cubit/destination_state.dart';
 import 'package:travel_app/features/destination/models/destination_model.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -30,7 +32,7 @@ class DetailScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.asset(
-                      place.image,
+                      place.imageUrl,
                       height: height * 0.65,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -69,7 +71,7 @@ class DetailScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    place.name,
+                                    place.title,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: width * 0.055,
@@ -154,7 +156,7 @@ class DetailScreen extends StatelessWidget {
               ),
               SizedBox(height: height * 0.02),
 
-              BlocConsumer<DetailsCubit, DetailsState>(
+              BlocConsumer<BookingCubit, BookingState>(
                 listener: (context, state) {
                   if (state is BookingSuccess) {
                     showDialog(
@@ -191,7 +193,7 @@ class DetailScreen extends StatelessWidget {
                 builder: (context, state) {
                   return ElevatedButton(
                     onPressed: () {
-                      context.read<DetailsCubit>().bookTrip(place, user);
+                      context.read<BookingCubit>().bookPlace(place, user);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,

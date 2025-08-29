@@ -1,17 +1,14 @@
-import 'package:travel_app/features/destination/models/destination_model.dart';
 
-abstract class DestinationState {}
 
-class DestinationInitial extends DestinationState {}
+abstract class BookingState {}
 
-class DestinationLoading extends DestinationState {}
+class BookingInitial extends BookingState {}
 
-class DestinationLoaded extends DestinationState {
-  final List<DestinationModel> destinations;
-  DestinationLoaded(this.destinations);
-}
+class BookingLoading extends BookingState {}
 
-class DestinationError extends DestinationState {
+class BookingSuccess extends BookingState {}
+
+class BookingError extends BookingState {
   final String message;
-  DestinationError(this.message);
+  BookingError(this.message);
 }
