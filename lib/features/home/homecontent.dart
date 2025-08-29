@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/cubit/auth_logic.dart';
 import 'package:travel_app/features/auth/cubit/auth_state.dart';
+import 'package:travel_app/features/auth/models/user_model.dart';
 import 'package:travel_app/features/destination/details/details_screen.dart';
-
-import 'package:travel_app/features/destination/widgets/card.dart';
-// import 'package:travel_app/features/destination/widgets/card2.dart';
-
 import 'package:travel_app/features/destination/models/destination_model.dart';
+import 'package:travel_app/features/destination/widgets/card.dart';
 
 class HomeContentPage extends StatefulWidget {
   const HomeContentPage({super.key});
@@ -21,8 +18,32 @@ class HomeContentPage extends StatefulWidget {
 }
 
 class _HomeContentPageState extends State<HomeContentPage> {
+
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+
+  AppUser? currentUser; 
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUser();
+  }
+
+  Future<void> fetchUser() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null) {
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(firebaseUser.uid)
+          .get();
+      if (doc.exists) {
+        setState(() {
+          currentUser = AppUser.fromJson(doc.data()!);
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +51,9 @@ class _HomeContentPageState extends State<HomeContentPage> {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
           }
           if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -41,7 +62,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
           }
         },
         builder: (context, state) {
-          if (state is AuthLoading) {
+          if (state is AuthLoading || currentUser == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -50,13 +71,11 @@ class _HomeContentPageState extends State<HomeContentPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// Greeting
+                // Greeting
                 Row(
                   children: [
                     Text(
-                      state is AuthSuccess
-                          ? 'Hi, ${state.user.name}'
-                          : 'Hi, Guest',
+                      'Hi, ${currentUser!.name}',
                       style: TextStyle(
                         color: ColorsStyle.thrtineeColor,
                         fontSize: 22,
@@ -76,7 +95,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 ),
                 const SizedBox(height: 30),
 
-                /// Search Bar
+                // Search Bar
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
@@ -112,7 +131,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
 
                 const SizedBox(height: 50),
 
-                /// Section title
+                // Section title
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -149,7 +168,6 @@ class _HomeContentPageState extends State<HomeContentPage> {
                       return const Center(child: Text("No destinations found"));
                     }
 
-                    // Convert snapshot to List<DestinationModel>
                     final destinations = snapshot.data!.docs
                         .map(
                           (doc) => DestinationModel.fromJson(
@@ -158,7 +176,6 @@ class _HomeContentPageState extends State<HomeContentPage> {
                           ),
                         )
                         .where((place) {
-                          // Apply search filter
                           final name = place.title.toLowerCase();
                           final location = place.location.toLowerCase();
                           return name.contains(_searchQuery.toLowerCase()) ||
@@ -174,17 +191,18 @@ class _HomeContentPageState extends State<HomeContentPage> {
                             children: [
                               PlaceCard(
                                 place: place,
-
+                                user: currentUser!, 
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) =>
-                                          DetailScreen(place: place),
+                                      builder: (_) => DetailScreen(
+                                        place: place,
+                                        user: currentUser!,
+                                      ),
                                     ),
                                   );
                                 },
-                                user: null,
                               ),
                               const SizedBox(width: 16),
                             ],
@@ -202,3 +220,4 @@ class _HomeContentPageState extends State<HomeContentPage> {
     );
   }
 }
+

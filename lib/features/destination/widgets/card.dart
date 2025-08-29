@@ -112,11 +112,11 @@ class _PlaceCardState extends State<PlaceCard> {
                 },
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey[300],
+                    color: ColorsStyle.nineColor,
                     child: const Icon(
                       Icons.image_not_supported,
                       size: 50,
-                      color: Colors.grey,
+                      color: ColorsStyle.secondColor,
                     ),
                   );
                 },

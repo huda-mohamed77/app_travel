@@ -41,7 +41,12 @@ class DestinationService {
     final user = _auth.currentUser;
     if (user == null) return;
 
-    await _firestore.doc(user.uid).collection('favourites').add(placeData);
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(user.uid)
+    .collection('favourites')
+    .doc(placeData['id']) 
+    .set(placeData);
 
     print("✅ Place added to favourites");
   }
@@ -51,7 +56,13 @@ class DestinationService {
     final user = _auth.currentUser;
     if (user == null) return;
 
-    await _firestore.doc(user.uid).collection('favourites').doc(docId).delete();
+  await FirebaseFirestore.instance
+    .collection('users')
+    .doc(user.uid)
+    .collection('favourites')
+    .doc(docId)
+    .delete();
+
 
     print("🗑️ Place removed from favourites");
   }
@@ -61,12 +72,21 @@ class DestinationService {
     final user = _auth.currentUser;
     if (user == null) return [];
 
-    final snapshot = await _firestore
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
         .doc(user.uid)
         .collection('favourites')
         .get();
 
-    return snapshot.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList();
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      return {
+        'id': doc.id,
+        'name': data['title'],
+        'location': data['location'],
+        'image': data['imageUrl'],
+      };
+    }).toList();
   }
 
   // ✅ Update user profile (name/email)
@@ -87,12 +107,13 @@ class DestinationService {
   Future<bool> isPlaceFavourite(String placeName) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return false;
+final snapshot = await FirebaseFirestore.instance
+    .collection('users')
+    .doc(user.uid)
+    .collection('favourites')
+    .where('title', isEqualTo: placeName)
+    .get();
 
-    final snapshot = await _firestore
-        .doc(user.uid)
-        .collection('favourites')
-        .where('name', isEqualTo: placeName)
-        .get();
 
     return snapshot.docs.isNotEmpty;
   }

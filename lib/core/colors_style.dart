@@ -16,4 +16,5 @@ class ColorsStyle {
   static const Color elevenColor = Color(0xff383839);
   static const Color twlveColor = CupertinoColors.destructiveRed;
   static const Color thrtineeColor = Color(0xff1F2E4C);
+    static const Color fourteenColor = Color(0xffF3F5F9);
 }

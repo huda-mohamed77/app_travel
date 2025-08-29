@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travel_app/core/colors_style.dart';
 
 import 'package:travel_app/features/auth/models/user_model.dart';
 
@@ -10,8 +11,9 @@ import 'package:travel_app/features/destination/models/destination_model.dart';
 
 class DetailScreen extends StatelessWidget {
   final DestinationModel place;
+    final AppUser user;
 
-  const DetailScreen({super.key, required this.place});
+  const DetailScreen({super.key, required this.place, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class DetailScreen extends StatelessWidget {
                       place.imageUrl,
                       height:
                           MediaQuery.of(context).size.height *
-                          0.65, // استخدم ارتفاع الشاشة
+                          0.65, 
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
@@ -69,14 +71,14 @@ class DetailScreen extends StatelessWidget {
                                   Text(
                                     place.title,
                                     style: const TextStyle(
-                                      color: Colors.white,
+                                      color: ColorsStyle.primaryColor,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w600,
                                       shadows: [
                                         Shadow(
                                           offset: Offset(0, 1),
                                           blurRadius: 2,
-                                          color: Colors.black26,
+                                          color: ColorsStyle.thrtineeColor,
                                         ),
                                       ],
                                     ),
@@ -94,14 +96,14 @@ class DetailScreen extends StatelessWidget {
                                       Text(
                                         place.location,
                                         style: const TextStyle(
-                                          color: Colors.white70,
+                                          color: ColorsStyle.sixColor,
                                           fontSize: 12,
                                           height: 1,
                                           shadows: [
                                             Shadow(
                                               offset: Offset(0, 1),
                                               blurRadius: 2,
-                                              color: Colors.black26,
+                                              color: ColorsStyle.thrtineeColor,
                                             ),
                                           ],
                                         ),
@@ -114,17 +116,17 @@ class DetailScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Text(
+                                 Text(
                                   'Price',
                                   style: TextStyle(
-                                    color: Colors.white54,
+                                    color: ColorsStyle.secondColor,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                     shadows: [
                                       Shadow(
                                         offset: Offset(0, 1),
                                         blurRadius: 2,
-                                        color: Colors.black26,
+                                        color: ColorsStyle.thrtineeColor,
                                       ),
                                     ],
                                   ),
@@ -133,14 +135,14 @@ class DetailScreen extends StatelessWidget {
                                 Text(
                                   '\$${place.price.toStringAsFixed(2)}',
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    color: ColorsStyle.primaryColor,
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,
                                     shadows: [
                                       Shadow(
                                         offset: Offset(0, 1),
                                         blurRadius: 2,
-                                        color: Colors.black26,
+                                        color: ColorsStyle.thrtineeColor,
                                       ),
                                     ],
                                   ),
@@ -160,12 +162,12 @@ class DetailScreen extends StatelessWidget {
                 children: const [
                   Text(
                     'Overview',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700,color: ColorsStyle.thrtineeColor),
                   ),
                   SizedBox(width: 14),
                   Text(
                     'Details',
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                    style: TextStyle(fontSize: 14, color: ColorsStyle.thrtineeColor),
                   ),
                 ],
               ),
@@ -174,13 +176,14 @@ class DetailScreen extends StatelessWidget {
 
               Row(
                 children: [
-                  _IconBox(icon: Icons.access_time),
+                  _IconBox(icon: Icons.access_time,),
                   const SizedBox(width: 10),
                   Text(
                     place.duration,
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
+                      color: ColorsStyle.thrtineeColor
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -191,6 +194,7 @@ class DetailScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
+                      color: ColorsStyle.thrtineeColor
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -201,6 +205,7 @@ class DetailScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
+                      color: ColorsStyle.thrtineeColor
                     ),
                   ),
                 ],
@@ -210,7 +215,7 @@ class DetailScreen extends StatelessWidget {
 
               Text(
                 place.description,
-                style: const TextStyle(fontSize: 13, color: Colors.grey),
+                style: const TextStyle(fontSize: 13, color: ColorsStyle.sevenColor,fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(height: 16),
@@ -221,19 +226,19 @@ class DetailScreen extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text("Booking Confirmed ✅"),
+                        title: Text("Booking Confirmed ✅",style: TextStyle(color: ColorsStyle.thrtineeColor)),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Trip: ${place.title}"),
+                            Text("Trip: ${place.title}",style: TextStyle(color: ColorsStyle.thrtineeColor)),
                             const SizedBox(height: 6),
                             Text(
-                              "Date: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                              "Date: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",style: TextStyle(color: ColorsStyle.thrtineeColor),
                             ),
                             const SizedBox(height: 6),
                             Text(
-                              "Time: ${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}",
+                              "Time: ${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}",style: TextStyle(color: ColorsStyle.thrtineeColor)
                             ),
                             const SizedBox(height: 12),
                             const Text(
@@ -245,7 +250,7 @@ class DetailScreen extends StatelessWidget {
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: const Text("OK"),
+                            child: const Text("OK",style: TextStyle(color: ColorsStyle.thrtineeColor),),
                           ),
                         ],
                       ),
@@ -254,12 +259,12 @@ class DetailScreen extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text("Booking Failed ❌"),
+                        title: const Text("Booking Failed ❌",style: TextStyle(color: ColorsStyle.thrtineeColor)),
                         content: Text(state.message),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: const Text("OK"),
+                            child: const Text("OK",style: TextStyle(color: ColorsStyle.thrtineeColor)),
                           ),
                         ],
                       ),
@@ -268,29 +273,32 @@ class DetailScreen extends StatelessWidget {
                 },
                 builder: (context, state) {
                   return ElevatedButton(
+                    
                     onPressed: () {
-                      // context.read<BookingCubit>().bookPlace(place);
+                  context.read<BookingCubit>().bookPlace(place, user);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: ColorsStyle.thrtineeColor,
+                      padding: const EdgeInsets.symmetric(vertical: 20),
                       shape: RoundedRectangleBorder(
+                        
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                         mainAxisSize: MainAxisSize.max,
                       children: const [
                         Text(
                           'Book Now',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: ColorsStyle.primaryColor,
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         SizedBox(width: 12),
-                        Icon(Icons.send_sharp, color: Colors.white, size: 30),
+                        Icon(Icons.send_sharp, color: ColorsStyle.primaryColor, size: 30),
                       ],
                     ),
                   );
@@ -313,10 +321,10 @@ class _IconBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: const Color(0xFFF3F5F9),
+        color: ColorsStyle.fourteenColor,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Icon(icon, size: 18, color: Colors.black54),
+      child: Icon(icon, size: 18, color: ColorsStyle.thrtineeColor),
     );
   }
 }
