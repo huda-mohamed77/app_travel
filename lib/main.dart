@@ -27,8 +27,7 @@ class MyApp extends StatelessWidget {
 
         BlocProvider(create: (context) => BookingCubit(DestinationService())),
 
-        BlocProvider(create: (context) =>  BookingCubit(FirebaseFunctions())),
-
+        // BlocProvider(create: (context) =>  BookingCubit(FirebaseFunctions())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

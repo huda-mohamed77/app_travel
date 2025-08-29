@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import 'package:travel_app/features/auth/models/user_model.dart';
 
 import 'package:travel_app/features/destination/cubit/destination_cubit.dart';
 import 'package:travel_app/features/destination/cubit/destination_state.dart';
 import 'package:travel_app/features/destination/models/destination_model.dart';
-import 'package:travel_app/features/auth/models/user_model.dart';
+// import 'package:travel_app/features/auth/models/user_model.dart';
 
 class DetailScreen extends StatelessWidget {
   final DestinationModel place;
-  final AppUser user;
 
-  const DetailScreen({super.key, required this.place, required this.user});
+  const DetailScreen({super.key, required this.place});
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +27,11 @@ class DetailScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: Stack(
                   children: [
-
                     Image.network(
                       place.imageUrl,
-                      height: 330,
-
-                    Image.asset(
-                      place.imageUrl,
-                      height: height * 0.65,
-
+                      height:
+                          MediaQuery.of(context).size.height *
+                          0.65, // استخدم ارتفاع الشاشة
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
@@ -47,10 +41,7 @@ class DetailScreen extends StatelessWidget {
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.35),
-                            ],
+                            colors: [Colors.transparent, Colors.black],
                           ),
                         ),
                       ),
@@ -77,11 +68,7 @@ class DetailScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     place.title,
-
                                     style: const TextStyle(
-
-                                    style: TextStyle(
-
                                       color: Colors.white,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w600,
@@ -167,7 +154,6 @@ class DetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(height: 14),
 
               Row(
@@ -229,7 +215,6 @@ class DetailScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-
               BlocConsumer<BookingCubit, BookingState>(
                 listener: (context, state) {
                   if (state is BookingSuccess) {
@@ -284,7 +269,7 @@ class DetailScreen extends StatelessWidget {
                 builder: (context, state) {
                   return ElevatedButton(
                     onPressed: () {
-                      context.read<BookingCubit>().bookPlace(place, user);
+                      // context.read<BookingCubit>().bookPlace(place);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/cubit/auth_logic.dart';
 import 'package:travel_app/features/auth/cubit/auth_state.dart';
+import 'package:travel_app/features/auth/login/login_screan.dart';
 import 'package:travel_app/features/destination/database/destination_service.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -66,7 +67,10 @@ class ProfilePage extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () {
                       context.read<AuthCubit>().logout();
-                      Navigator.pushReplacementNamed(context, '/login');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => LoginScreen()),
+                      );
                     },
                     icon: Icon(Icons.logout),
                     label: Text(

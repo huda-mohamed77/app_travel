@@ -7,7 +7,7 @@ import 'package:travel_app/features/auth/cubit/auth_state.dart';
 import 'package:travel_app/features/auth/signup/signup_screan.dart';
 import 'package:travel_app/features/auth/widget/custom_button.dart';
 import 'package:travel_app/features/auth/widget/custom_textfeild.dart';
-// import 'package:travel_app/features/home/home_screen.dart';
+import 'package:travel_app/features/home/home_screen.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
@@ -25,10 +25,10 @@ class LoginScreen extends StatelessWidget {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(builder: (_) => HomeScreen()),
-              // );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => HomeScreen()),
+              );
             } else if (state is AuthFailure) {
               ScaffoldMessenger.of(
                 context,

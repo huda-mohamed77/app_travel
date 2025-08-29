@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/features/auth/cubit/auth_logic.dart';
 import 'package:travel_app/features/auth/cubit/auth_state.dart';
+import 'package:travel_app/features/destination/details/details_screen.dart';
 
 import 'package:travel_app/features/destination/widgets/card.dart';
-import 'package:travel_app/features/destination/widgets/card2.dart';
+// import 'package:travel_app/features/destination/widgets/card2.dart';
 
 import 'package:travel_app/features/destination/models/destination_model.dart';
-import 'package:travel_app/features/destination/widgets/card.dart';
 
 class HomeContentPage extends StatefulWidget {
   const HomeContentPage({super.key});
@@ -28,9 +30,9 @@ class _HomeContentPageState extends State<HomeContentPage> {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
           if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -52,7 +54,9 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 Row(
                   children: [
                     Text(
-                      state is AuthSuccess ? 'Hi, ${state.user.name}' : 'Hi, Guest',
+                      state is AuthSuccess
+                          ? 'Hi, ${state.user.name}'
+                          : 'Hi, Guest',
                       style: TextStyle(
                         color: ColorsStyle.thrtineeColor,
                         fontSize: 22,
@@ -132,9 +136,10 @@ class _HomeContentPageState extends State<HomeContentPage> {
 
                 const SizedBox(height: 50),
 
-                /// Places list from Firestore
                 StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('destinations').snapshots(),
+                  stream: FirebaseFirestore.instance
+                      .collection('places')
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -145,18 +150,21 @@ class _HomeContentPageState extends State<HomeContentPage> {
                     }
 
                     // Convert snapshot to List<DestinationModel>
-                    final destinations = snapshot.data!.docs.map((doc) {
-                      return DestinationModel.fromJson(
-                        doc.data() as Map<String, dynamic>,
-                        doc.id,
-                      );
-                    }).where((place) {
-                      // Apply search filter
-                      final name = place.title.toLowerCase();
-                      final location = place.location.toLowerCase();
-                      return name.contains(_searchQuery.toLowerCase()) ||
-                          location.contains(_searchQuery.toLowerCase());
-                    }).toList();
+                    final destinations = snapshot.data!.docs
+                        .map(
+                          (doc) => DestinationModel.fromJson(
+                            doc.data() as Map<String, dynamic>,
+                            doc.id,
+                          ),
+                        )
+                        .where((place) {
+                          // Apply search filter
+                          final name = place.title.toLowerCase();
+                          final location = place.location.toLowerCase();
+                          return name.contains(_searchQuery.toLowerCase()) ||
+                              location.contains(_searchQuery.toLowerCase());
+                        })
+                        .toList();
 
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -164,7 +172,20 @@ class _HomeContentPageState extends State<HomeContentPage> {
                         children: destinations.map((place) {
                           return Row(
                             children: [
-                              PlaceCard(place: place, user: null),
+                              PlaceCard(
+                                place: place,
+
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          DetailScreen(place: place),
+                                    ),
+                                  );
+                                },
+                                user: null,
+                              ),
                               const SizedBox(width: 16),
                             ],
                           );
@@ -181,5 +202,3 @@ class _HomeContentPageState extends State<HomeContentPage> {
     );
   }
 }
-
-

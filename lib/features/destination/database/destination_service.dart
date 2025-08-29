@@ -5,15 +5,13 @@ import 'package:travel_app/features/destination/models/destination_model.dart';
 class DestinationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference _firestore = FirebaseFirestore.instance.collection(
-    'destinations',
+    'places',
   );
-
 
   Future<void> addDestination(DestinationModel destination) async {
     await _firestore.add(destination.toJson());
   }
 
-  
   Future<List<DestinationModel>> getDestinations() async {
     final snapshot = await _firestore.get();
     return snapshot.docs

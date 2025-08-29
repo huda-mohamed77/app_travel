@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/core/colors_style.dart';
 import 'package:travel_app/core/dp/firebase_fun.dart';
 import 'package:travel_app/features/destination/database/destination_service.dart';
- 
+import 'package:travel_app/features/home/home_screen.dart';
 
 class FavouritesPage extends StatefulWidget {
   const FavouritesPage({super.key});
@@ -38,7 +38,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
   Future<void> _removeFavourite(String docId) async {
     await DestinationService().removeFromFavorites(docId);
-    _loadFavourites(); 
+    _loadFavourites();
   }
 
   @override
@@ -55,59 +55,71 @@ class _FavouritesPageState extends State<FavouritesPage> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : favourites.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.favorite_border,
-                          size: 100, color: ColorsStyle.secondColor),
-                      SizedBox(height: 16),
-                      Text(
-                        'No favourites yet',
-                        style: TextStyle(color: ColorsStyle.thrtineeColor),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                           style: ElevatedButton.styleFrom(backgroundColor: ColorsStyle.thrtineeColor),
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/home');
-                        },
-                        child: Text('Explore Places',
-                            style: TextStyle(color: ColorsStyle.primaryColor)),
-                      )
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.favorite_border,
+                    size: 100,
+                    color: ColorsStyle.secondColor,
                   ),
-                )
-              : ListView.builder(
-                  itemCount: favourites.length,
-                  itemBuilder: (context, index) {
-                    final place = favourites[index];
-                    return Card(
-                      margin: const EdgeInsets.all(10),
-                      color: ColorsStyle.thrtineeColor,
-                      child: ListTile(
-                        leading: place['image'] != null
-                            ? Image.network(
-                                place['image'],
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                              )
-                            : null,
-                        title: Text(place['name'] ?? '',
-                            style: TextStyle(color: ColorsStyle.primaryColor)),
-                        subtitle: Text(place['location'] ?? '',
-                            style: TextStyle(color: ColorsStyle.primaryColor)),
-                        trailing: IconButton(
-                          icon: Icon(Icons.favorite, color: ColorsStyle.twlveColor),
-                          onPressed: () => _removeFavourite(place['id']),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                  SizedBox(height: 16),
+                  Text(
+                    'No favourites yet',
+                    style: TextStyle(color: ColorsStyle.thrtineeColor),
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorsStyle.thrtineeColor,
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => HomeScreen()),
+                      );
+                    },
+                    child: Text(
+                      'Explore Places',
+                      style: TextStyle(color: ColorsStyle.primaryColor),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : ListView.builder(
+              itemCount: favourites.length,
+              itemBuilder: (context, index) {
+                final place = favourites[index];
+                return Card(
+                  margin: const EdgeInsets.all(10),
+                  color: ColorsStyle.thrtineeColor,
+                  child: ListTile(
+                    leading: place['image'] != null
+                        ? Image.network(
+                            place['image'],
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                    title: Text(
+                      place['name'] ?? '',
+                      style: TextStyle(color: ColorsStyle.primaryColor),
+                    ),
+                    subtitle: Text(
+                      place['location'] ?? '',
+                      style: TextStyle(color: ColorsStyle.primaryColor),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.favorite, color: ColorsStyle.twlveColor),
+                      onPressed: () => _removeFavourite(place['id']),
+                    ),
+                  ),
+                );
+              },
+            ),
     );
   }
 }
-
-
