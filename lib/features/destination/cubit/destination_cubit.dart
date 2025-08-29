@@ -1,54 +1,33 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_app/features/destination/cubit/destination_state.dart';
 import 'package:travel_app/features/destination/models/destination_model.dart';
-import 'package:travel_app/features/destination/services/destination_service.dart';
+import 'package:travel_app/features/auth/models/user_model.dart';
 
-class DestinationCubit extends Cubit<DestinationState> {
-  final DestinationService service;
+class BookingCubit extends Cubit<BookingState> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  DestinationCubit(this.service) : super(DestinationInitial());
+  BookingCubit(destinationService) : super(BookingInitial());
 
-  // جلب البيانات
-  Future<void> fetchDestinations() async {
+  Future<void> bookPlace(DestinationModel place, AppUser user) async {
+    emit(BookingLoading());
     try {
-      emit(DestinationLoading());
-      final destinations = await service.getDestinations();
-      emit(DestinationLoaded(destinations));
-    } catch (e) {
-      emit(DestinationError(e.toString()));
-    }
-  }
+      final now = DateTime.now();
+      final bookingData = {
+        'userId': user.id,
+        'placeId': place.id,
+        'placeName': place.title,
+        'price': place.price,
+        'date': "${now.day}/${now.month}/${now.year}",
+        'time': "${now.hour}:${now.minute.toString().padLeft(2, '0')}",
+        'createdAt': now,
+      };
 
-  // إضافة مكان
-  Future<void> addDestination(DestinationModel destination) async {
-    try {
-      await service.addDestination(destination);
-      fetchDestinations(); // نعيد الجلب بعد الإضافة
-    } catch (e) {
-      emit(DestinationError(e.toString()));
-    }
-  }
+      await firestore.collection('bookings').add(bookingData);
 
-  // تعديل
-  Future<void> updateDestination(
-    String id,
-    DestinationModel destination,
-  ) async {
-    try {
-      await service.updateDestination(id, destination);
-      fetchDestinations();
+      emit(BookingSuccess());
     } catch (e) {
-      emit(DestinationError(e.toString()));
-    }
-  }
-
-  // مسح
-  Future<void> deleteDestination(String id) async {
-    try {
-      await service.deleteDestination(id);
-      fetchDestinations();
-    } catch (e) {
-      emit(DestinationError(e.toString()));
+      emit(BookingError(e.toString()));
     }
   }
 }

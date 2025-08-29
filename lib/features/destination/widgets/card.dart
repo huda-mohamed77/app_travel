@@ -2,9 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/colors_style.dart';
+import 'package:travel_app/features/auth/models/user_model.dart';
+import 'package:travel_app/features/destination/models/destination_model.dart';
 
 class PlaceCard extends StatefulWidget {
-  const PlaceCard({super.key});
+  final DestinationModel place;
+   final AppUser ?user;
+  const PlaceCard({super.key, required this.place, required this.user});
 
   @override
   State<PlaceCard> createState() => _PlaceCardState();
@@ -12,50 +16,49 @@ class PlaceCard extends StatefulWidget {
 
 class _PlaceCardState extends State<PlaceCard> {
   bool isFavourite = false;
-Future<void> _addToFavourites() async {
-  final user = FirebaseAuth.instance.currentUser;
+  Future<void> _addToFavourites() async {
+    final user = FirebaseAuth.instance.currentUser;
 
-  if (user == null) return;
 
-  try {
-    final docRef = FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('favourites')
-        .doc('mount_fuji');
+    if (user == null) return;
 
-    final snapshot = await docRef.get();
-    if (snapshot.exists) {
-      ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Already added to favourites")),
+    try {
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('favourites')
+          .doc(widget.place.id);
+
+      final snapshot = await docRef.get();
+      if (snapshot.exists) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Already added to favourites")));
+        return;
+      }
+
+      await docRef.set(
+       widget.place.toJson(),
       );
-      return;
+
+      setState(() {
+        isFavourite = true;
+      });
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("✅ Added to favourites")));
+    } catch (e) {
+      print("❌ Error adding to favourites: $e");
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Something went wrong")));
     }
-
-    await docRef.set({
-      'name': 'Mount Fuji',
-      'location': 'Tokyo, Japan',
-      'image': 'assets/download (29) 1.png',
-    });
-
-    setState(() {
-      isFavourite = true;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-       SnackBar(content: Text("✅ Added to favourites")),
-    );
-  } catch (e) {
-    print("❌ Error adding to favourites: $e");
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Something went wrong")),
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
+  
     return SizedBox(
       width: 180,
       height: 300,
@@ -65,10 +68,8 @@ Future<void> _addToFavourites() async {
           fit: StackFit.expand,
           children: [
             // Background Image
-            Image.asset(
-              'assets/download (29) 1.png',
-              fit: BoxFit.cover,
-            ),
+            Image.network(widget.
+          place.imageUrl  , fit: BoxFit.cover),
 
             Container(
               decoration: BoxDecoration(
@@ -105,31 +106,38 @@ Future<void> _addToFavourites() async {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Mount Fuji, Tokyo',
+                    widget.place.title,
                     style: TextStyle(
                       color: ColorsStyle.eightColor,
                       fontWeight: FontWeight.w200,
                       fontSize: 14,
                     ),
                   ),
-                   SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(Icons.location_on_outlined,
-                          color: ColorsStyle.nineColor, size: 14),
-                    SizedBox(width: 4),
+                      Icon(
+                        Icons.location_on_outlined,
+                        color: ColorsStyle.nineColor,
+                        size: 14,
+                      ),
+                      SizedBox(width: 4),
                       Text(
-                        'Tokyo, Japan',
+                        widget.place.location,
                         style: TextStyle(
-                            color: ColorsStyle.nineColor, fontSize: 12),
+                          color: ColorsStyle.nineColor,
+                          fontSize: 12,
+                        ),
                       ),
                       Spacer(),
-                       Icon(Icons.star_border_outlined, size: 14),
+                      Icon(Icons.star_border_outlined, size: 14),
                       SizedBox(width: 2),
                       Text(
-                        '4.8',
+                        widget.place.rating.toString(),
                         style: TextStyle(
-                            color: ColorsStyle.nineColor, fontSize: 12),
+                          color: ColorsStyle.nineColor,
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),

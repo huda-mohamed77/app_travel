@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/colors_style.dart';
-import 'package:travel_app/core/dp/firebase_fun.dart';
-
+import 'package:travel_app/features/auth/models/user_model.dart';
+import 'package:travel_app/features/destination/models/destination_model.dart';
 
 class AndesCard extends StatefulWidget {
-  const AndesCard({super.key});
+  final DestinationModel place;
+  final AppUser? user;
+
+  const AndesCard({super.key, required this.place, this.user});
 
   @override
   State<AndesCard> createState() => _AndesCardState();
@@ -15,29 +19,37 @@ class _AndesCardState extends State<AndesCard> {
   bool isFavourite = false;
 
   Future<void> _addToFavourites() async {
-      final user = FirebaseAuth.instance.currentUser;
-
-  
-  if (user == null) return;
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
     try {
-      await FirebaseFunctions().addToFavorites({
-        'name': 'Andes Mountain',
-        'location': 'South America',
-        'image': 'assets/download (30) 2.png',
-      });
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('favourites')
+          .doc(widget.place.id);
+
+      final snapshot = await docRef.get();
+      if (snapshot.exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Already added to favourites")),
+        );
+        return;
+      }
+
+      await docRef.set(widget.place.toJson());
 
       setState(() {
         isFavourite = true;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text("✅ Added to favourites")),
+        const SnackBar(content: Text("✅ Added to favourites")),
       );
     } catch (e) {
-      print("❌ Error: $e");
+      print("❌ Error adding to favourites: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text("Something went wrong")),
+        const SnackBar(content: Text("Something went wrong")),
       );
     }
   }
@@ -52,13 +64,15 @@ class _AndesCardState extends State<AndesCard> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-      
-            Image.asset(
-              'assets/download (30) 2.png',
+            // صورة من Firebase
+            Image.network(
+              widget.place.imageUrl,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>  Icon(Icons.broken_image),
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.broken_image),
             ),
 
+            // طبقة تظليل
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -69,7 +83,7 @@ class _AndesCardState extends State<AndesCard> {
               ),
             ),
 
-            // ❤️ Favorite Button
+            // زرار ❤️
             Positioned(
               top: 8,
               right: 8,
@@ -85,7 +99,7 @@ class _AndesCardState extends State<AndesCard> {
               ),
             ),
 
-            // Info
+            // المعلومات
             Positioned(
               bottom: 12,
               left: 12,
@@ -94,34 +108,34 @@ class _AndesCardState extends State<AndesCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Andes, South',
+                    widget.place.title,
                     style: TextStyle(
                       color: ColorsStyle.eightColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.location_on_outlined,
                         color: ColorsStyle.nineColor,
                         size: 14,
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text(
-                        'South America',
+                        widget.place.location,
                         style: TextStyle(
                           color: ColorsStyle.nineColor,
                           fontSize: 12,
                         ),
                       ),
-                      Spacer(),
-                      Icon(Icons.star_border_outlined, size: 14),
-                      SizedBox(width: 2),
+                      const Spacer(),
+                      const Icon(Icons.star_border_outlined, size: 14),
+                      const SizedBox(width: 2),
                       Text(
-                        '4.7',
+                        widget.place.rating.toString(),
                         style: TextStyle(
                           color: ColorsStyle.nineColor,
                           fontSize: 12,

@@ -8,12 +8,12 @@ class DestinationService {
     'destinations',
   );
 
-  // Create
+
   Future<void> addDestination(DestinationModel destination) async {
     await _firestore.add(destination.toJson());
   }
 
-  // Read (جلب كل الأماكن)
+  
   Future<List<DestinationModel>> getDestinations() async {
     final snapshot = await _firestore.get();
     return snapshot.docs
