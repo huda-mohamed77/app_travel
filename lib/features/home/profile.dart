@@ -1,13 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_app/core/colors_style.dart';
-import 'package:travel_app/features/auth/cubit/auth_logic.dart';
-import 'package:travel_app/features/auth/cubit/auth_state.dart';
+import 'package:travel_app/features/auth/models/user_model.dart';
 import 'package:travel_app/features/auth/login/login_screan.dart';
 import 'package:travel_app/features/destination/database/destination_service.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
+
+  Future<AppUser?> fetchUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return AppUser.fromJson(doc.data()!);
+      }
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,73 +32,14 @@ class ProfilePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          if (state is AuthLoading) {
+      body: FutureBuilder<AppUser?>(
+        future: fetchUserData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is AuthSuccess) {
-            final user = state.user;
+          }
 
-            return Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(''),
-                    backgroundColor: ColorsStyle.thrtineeColor,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    user.name,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: ColorsStyle.secondColor,
-                    ),
-                  ),
-                  Text(
-                    user.email,
-                    style: TextStyle(color: ColorsStyle.secondColor),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      _showEditDialog(context, user.name, user.email);
-                    },
-                    icon: Icon(Icons.edit, color: ColorsStyle.primaryColor),
-                    label: Text(
-                      'Edit Profile',
-                      style: TextStyle(color: ColorsStyle.primaryColor),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorsStyle.thrtineeColor,
-                    ),
-                  ),
-                  Spacer(),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      context.read<AuthCubit>().logout();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => LoginScreen()),
-                      );
-                    },
-                    icon: Icon(Icons.logout),
-                    label: Text(
-                      'Log Out',
-                      style: TextStyle(color: ColorsStyle.primaryColor),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorsStyle.thrtineeColor,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          } else if (state is AuthFailure) {
-            return Center(child: Text("❌ ${state.message}"));
-          } else {
+          if (!snapshot.hasData || snapshot.data == null) {
             return Center(
               child: Text(
                 "No user data",
@@ -94,6 +47,72 @@ class ProfilePage extends StatelessWidget {
               ),
             );
           }
+
+          final user = snapshot.data!;
+
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: ColorsStyle.thrtineeColor,
+                  child: Text(
+                    user.name[0].toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: ColorsStyle.primaryColor,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  user.name,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: ColorsStyle.secondColor,
+                  ),
+                ),
+                Text(
+                  user.email,
+                  style: TextStyle(color: ColorsStyle.secondColor),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    _showEditDialog(context, user.name, user.email);
+                  },
+                  icon: Icon(Icons.edit, color: ColorsStyle.primaryColor),
+                  label: Text(
+                    'Edit Profile',
+                    style: TextStyle(color: ColorsStyle.primaryColor),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorsStyle.thrtineeColor,
+                  ),
+                ),
+                Spacer(),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut(); // تسجيل خروج حقيقي
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => LoginScreen()),
+                    );
+                  },
+                  icon: Icon(Icons.logout),
+                  label: Text(
+                    'Log Out',
+                    style: TextStyle(color: ColorsStyle.primaryColor),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorsStyle.thrtineeColor,
+                  ),
+                ),
+              ],
+            ),
+          );
         },
       ),
     );
@@ -141,7 +160,7 @@ class ProfilePage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              context.read<DestinationService>().updateProfile(
+              context.read()<DestinationService>().updateProfile(
                 name: nameController.text,
                 email: emailController.text,
               );
@@ -157,3 +176,4 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+

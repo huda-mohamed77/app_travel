@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/core/text_style.dart';
+import 'package:travel_app/features/home/home_screen.dart';
 // import 'package:travel_app/features/auth/login/login_screan.dart';
 
 import 'package:travel_app/features/onboarding/on_screen.dart';
@@ -20,10 +22,20 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => OnboardingScreen()),
-      );
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // ✅ مسجل دخول
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => OnboardingScreen()),
+        );
+      }
     });
   }
 
